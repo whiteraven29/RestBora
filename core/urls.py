@@ -1,4 +1,5 @@
 from django.urls import include, path
+from django.contrib.auth import views as auth_views
 from rest_framework.routers import DefaultRouter
 
 from . import api, views
@@ -23,11 +24,20 @@ urlpatterns = [
     path("orders/<int:order_id>/status/", views.update_order_status, name="update-order-status"),
     path("cashier/", views.cashier_screen, name="cashier"),
     path("cashier/orders/<int:order_id>/payments/", views.record_payment, name="record-payment"),
+    path("menu/", views.menu_management_screen, name="menu-management"),
+    path("menu/categories/", views.add_menu_category, name="add-menu-category"),
+    path("menu/items/", views.add_menu_item, name="add-menu-item"),
+    path("menu/items/<int:item_id>/availability/", views.toggle_menu_item_availability, name="toggle-menu-item-availability"),
+    path("tables/qr/", views.table_qr_screen, name="table-qr"),
+    path("tables/", views.add_table, name="add-table"),
+    path("tables/<int:table_id>/qr.png", views.table_qr_png, name="table-qr-png"),
     path("inventory/", views.inventory_screen, name="inventory"),
     path("inventory/<int:item_id>/movement/", views.add_stock_movement, name="add-stock-movement"),
     path("expenses/", views.add_expense, name="add-expense"),
     path("public/<slug:slug>/menu/", views.public_menu_screen, name="public-menu"),
     path("public/<slug:slug>/orders/", views.create_public_order, name="create-public-order"),
+    path("accounts/login/", views.StaffLoginView.as_view(), name="login"),
+    path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("api/auth/register/", api.register, name="api-register"),
     path("api/auth/login/", api.login_view, name="api-login"),
     path("api/auth/logout/", api.logout_view, name="api-logout"),

@@ -1,0 +1,57 @@
+{% extends "core/internal_base.html" %}
+{% block title %}Table QR - RestBora{% endblock %}
+{% block nav_tables %}active{% endblock %}
+{% block internal_title %}Table QR Codes{% endblock %}
+{% block internal_subtitle %}Only owner and manager accounts can create tables and generate QR codes.{% endblock %}
+{% block internal_content %}
+<section class="rb-role-grid">
+  <article class="rb-panel rb-form-panel">
+    <div class="rb-panel-head">
+      <h2>Add Table</h2>
+    </div>
+    <form class="rb-expense-form" method="post" action="{% url 'add-table' %}">
+      {% csrf_token %}
+      <label>Table label
+        <input name="label" required placeholder="T5">
+      </label>
+      <label>Capacity
+        <input name="capacity" type="number" min="1" value="4">
+      </label>
+      <button>Generate Table QR</button>
+    </form>
+  </article>
+
+  <article class="rb-panel rb-list-panel">
+    <div class="rb-panel-head">
+      <h2>QR Rules</h2>
+    </div>
+    <div class="rb-dark-list">
+      <div><span><strong>Owner</strong><small>Can create tables and QR codes</small></span><b>Allowed</b></div>
+      <div><span><strong>Manager</strong><small>Can create tables and QR codes</small></span><b>Allowed</b></div>
+      <div><span><strong>Waiter/Kitchen/Cashier</strong><small>Cannot generate table QR codes</small></span><b>Blocked</b></div>
+    </div>
+  </article>
+</section>
+
+<section class="rb-panel rb-recent-expenses">
+  <div class="rb-panel-head">
+    <h2>Restaurant Tables</h2>
+    <button type="button">{{ tables|length }}</button>
+  </div>
+  <div class="rb-qr-grid">
+    {% for table in tables %}
+      <article>
+        <div>
+          <strong>{{ table.label }}</strong>
+          <small>{{ table.capacity }} seats | {% if table.is_active %}Active{% else %}Disabled{% endif %}</small>
+          <p>/public/{{ restaurant.slug }}/menu/?table={{ table.qr_token }}</p>
+        </div>
+        <img src="{% url 'table-qr-png' table.id %}" alt="QR code for {{ table.label }}">
+        <a class="button-link" href="{% url 'table-qr-png' table.id %}" download="{{ table.label }}-qr.png">Download</a>
+      </article>
+    {% empty %}
+      <p class="muted">No tables yet. Add a table to generate its QR code.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

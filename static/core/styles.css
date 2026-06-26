@@ -659,6 +659,17 @@ input, select, textarea {
   color: #d9dcdd;
   font-size: 18px;
 }
+.rb-profile form {
+  margin: 0;
+}
+.rb-logout {
+  min-height: 34px;
+  border-radius: 10px;
+  padding: 6px 12px;
+  background: #444b50 !important;
+  color: #d9dcdd !important;
+  font-size: 13px;
+}
 .rb-avatar {
   display: grid;
   place-items: center;
@@ -931,6 +942,277 @@ input, select, textarea {
   text-align: center;
   font-weight: 950;
 }
+.rb-messages {
+  margin: -28px 0 26px;
+}
+.rb-role-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(340px, .85fr);
+  gap: 28px;
+  align-items: start;
+}
+.rb-form-panel,
+.rb-list-panel {
+  min-width: 0;
+}
+.rb-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.dashboard-page label {
+  color: #d7dadc;
+  font-size: 14px;
+  font-weight: 850;
+}
+.dashboard-page input,
+.dashboard-page select,
+.dashboard-page textarea {
+  border: 0;
+  background: #3c4448;
+  color: var(--rb-text);
+}
+.dashboard-page input::placeholder,
+.dashboard-page textarea::placeholder {
+  color: #aeb3b5;
+}
+.dashboard-page button,
+.dashboard-page .button-link {
+  border: 0;
+  background: linear-gradient(90deg, var(--rb-orange), var(--rb-red));
+  color: #fff;
+  font-weight: 950;
+}
+.rb-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+.rb-menu-item {
+  grid-template-columns: 72px minmax(0, 1fr) 74px;
+  align-items: center;
+  min-height: 96px;
+  padding: 12px;
+  background: #2a3035;
+  border: 1px solid var(--rb-line);
+  border-radius: 16px;
+}
+.rb-menu-item .rb-plate {
+  width: 62px;
+  height: 62px;
+}
+.rb-menu-item strong,
+.rb-dark-list strong,
+.rb-stock-list strong {
+  color: #eef1f2;
+}
+.rb-menu-item small,
+.rb-dark-list small,
+.rb-stock-list small {
+  display: block;
+  color: var(--rb-muted);
+  margin-top: 4px;
+}
+.rb-dark-list,
+.rb-stock-list,
+.rb-payment-list {
+  display: grid;
+  gap: 14px;
+}
+.rb-dark-list > div,
+.rb-stock-list > div,
+.rb-payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  padding: 16px;
+  background: #2a3035;
+  border: 1px solid var(--rb-line);
+  border-radius: 16px;
+}
+.rb-dark-list b,
+.rb-payment-row b {
+  color: #fff;
+}
+.rb-kitchen-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.rb-kitchen-card footer {
+  align-items: center;
+  flex-wrap: wrap;
+}
+.rb-kitchen-card footer form {
+  display: inline-flex;
+}
+.rb-ticket-items {
+  display: grid;
+  gap: 14px;
+  margin: 26px 0;
+}
+.rb-ticket-items div {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+.rb-ticket-items .rb-plate {
+  width: 52px;
+  height: 52px;
+}
+.rb-ticket-items strong {
+  color: #edf0f1;
+}
+.rb-ticket-note {
+  padding: 12px;
+  background: rgba(255,159,22,.12);
+  border-left: 4px solid var(--rb-orange);
+  border-radius: 10px;
+  color: #ffd5a0;
+}
+.rb-payment-row form,
+.rb-stock-list form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.rb-payment-row input,
+.rb-payment-row select,
+.rb-stock-list input,
+.rb-stock-list select {
+  width: 150px;
+}
+.rb-expense-form {
+  display: grid;
+  gap: 16px;
+}
+.rb-expense-form button {
+  min-height: 48px;
+}
+.rb-check-row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.rb-check-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rb-check-row input {
+  width: auto;
+}
+.rb-recent-expenses {
+  margin-top: 28px;
+}
+.dashboard-page .muted {
+  color: var(--rb-muted);
+}
+.rb-menu-cards,
+.rb-qr-grid {
+  display: grid;
+  gap: 16px;
+}
+.rb-menu-cards article,
+.rb-qr-grid article {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  background: #2a3035;
+  border: 1px solid var(--rb-line);
+  border-radius: 16px;
+}
+.rb-menu-cards .rb-plate {
+  width: 66px;
+  height: 66px;
+}
+.rb-menu-cards strong,
+.rb-qr-grid strong {
+  color: #f0f2f3;
+  font-size: 18px;
+}
+.rb-menu-cards small,
+.rb-qr-grid small,
+.rb-qr-grid p {
+  display: block;
+  margin-top: 4px;
+  color: var(--rb-muted);
+}
+.rb-menu-cards p {
+  margin: 8px 0 0;
+  color: #c4c9cb;
+}
+.rb-qr-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.rb-qr-grid article {
+  grid-template-columns: minmax(0, 1fr) 128px auto;
+}
+.rb-qr-grid img {
+  width: 128px;
+  height: 128px;
+  padding: 8px;
+  background: #fff;
+  border-radius: 12px;
+}
+.rb-qr-grid .button-link {
+  align-self: center;
+  text-align: center;
+}
+.login-page .shell {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+.rb-login {
+  width: min(560px, 100%);
+}
+.rb-login-card {
+  display: grid;
+  gap: 28px;
+  padding: 42px;
+  background: linear-gradient(180deg, #2d3338 0%, #1f2428 100%);
+  border-radius: 22px;
+  box-shadow: 0 18px 36px rgba(0,0,0,.34);
+}
+.rb-login-card .rb-logo {
+  justify-self: center;
+}
+.rb-login-card h1 {
+  color: #fff;
+  font-size: 28px;
+  line-height: 1.18;
+  text-align: center;
+}
+.rb-login-card p {
+  margin: 10px 0 0;
+  color: var(--rb-muted);
+  text-align: center;
+}
+.rb-login-error {
+  padding: 12px;
+  background: rgba(255,45,18,.15);
+  border: 1px solid rgba(255,45,18,.35);
+  border-radius: 12px;
+  color: #ffb6aa !important;
+}
+.rb-login-form {
+  display: grid;
+  gap: 18px;
+}
+.rb-login-form button {
+  min-height: 52px;
+  margin-top: 4px;
+  font-size: 16px;
+}
 
 @media (max-width: 900px) {
   .topbar { align-items: flex-start; flex-direction: column; }
@@ -968,7 +1250,11 @@ input, select, textarea {
   .rb-app,
   .rb-summary,
   .rb-content-grid,
-  .rb-order-strip {
+  .rb-order-strip,
+  .rb-role-grid,
+  .rb-kitchen-board,
+  .rb-menu-grid,
+  .rb-form-grid {
     grid-template-columns: 1fr;
   }
   .rb-sidebar {
@@ -991,4 +1277,33 @@ input, select, textarea {
     padding-right: 16px;
   }
   .rb-bars span { width: 34px; }
+  .rb-dark-list > div,
+  .rb-stock-list > div,
+  .rb-payment-row,
+  .rb-payment-row form,
+  .rb-stock-list form {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .rb-payment-row input,
+  .rb-payment-row select,
+  .rb-stock-list input,
+  .rb-stock-list select {
+    width: 100%;
+  }
+  .rb-menu-item {
+    grid-template-columns: 58px minmax(0, 1fr) 70px;
+  }
+  .rb-menu-cards article,
+  .rb-qr-grid,
+  .rb-qr-grid article {
+    grid-template-columns: 1fr;
+  }
+  .rb-qr-grid img {
+    width: 160px;
+    height: 160px;
+  }
+  .rb-login-card {
+    padding: 28px;
+  }
 }

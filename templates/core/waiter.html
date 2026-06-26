@@ -1,45 +1,50 @@
-{% extends "core/base.html" %}
-{% block title %}Waiter - RestBora{% endblock %}
-{% block content %}
-<section class="page-head">
-  <div>
-    <h1>Waiter Order Entry</h1>
-    <p>Select a table, add quantities, and send the order to the kitchen.</p>
-  </div>
-</section>
-
-<section class="grid two">
-  <form class="panel form" method="post" action="{% url 'create-waiter-order' %}">
+{% extends "core/internal_base.html" %}
+{% block title %}Waiter Orders - RestBora{% endblock %}
+{% block nav_orders %}active{% endblock %}
+{% block internal_title %}Waiter Order Entry{% endblock %}
+{% block internal_subtitle %}Select a table, add quantities, and send orders to the kitchen.{% endblock %}
+{% block internal_content %}
+<section class="rb-role-grid">
+  <form class="rb-panel rb-form-panel" method="post" action="{% url 'create-waiter-order' %}">
     {% csrf_token %}
     <input type="hidden" name="restaurant" value="{{ restaurant.id }}">
-    <label>Table
-      <select name="table">
-        {% for table in tables %}<option value="{{ table.id }}">{{ table.label }}</option>{% endfor %}
-      </select>
-    </label>
-    <label>Customer name
-      <input name="customer_name" placeholder="Optional">
-    </label>
+    <div class="rb-panel-head">
+      <h2>New Order</h2>
+      <button type="submit">Send</button>
+    </div>
+    <div class="rb-form-grid">
+      <label>Table
+        <select name="table">
+          {% for table in tables %}<option value="{{ table.id }}">{{ table.label }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Customer name
+        <input name="customer_name" placeholder="Optional">
+      </label>
+    </div>
     <label>Order notes
       <textarea name="notes" rows="2" placeholder="No onions, takeaway, etc."></textarea>
     </label>
-    <div class="item-grid">
+    <div class="rb-menu-grid">
       {% for item in items %}
-        <label class="item-picker">
+        <label class="rb-menu-item">
+          <span class="rb-plate rb-plate-{{ forloop.counter }}"></span>
           <span><strong>{{ item.name }}</strong><small>{{ restaurant.currency }} {{ item.price }}</small></span>
           <input type="number" name="item_{{ item.id }}" min="0" value="0">
         </label>
       {% endfor %}
     </div>
-    <button class="primary">Send to Kitchen</button>
   </form>
 
-  <article class="panel">
-    <h2>Open Orders</h2>
-    <div class="table-list">
+  <article class="rb-panel rb-list-panel">
+    <div class="rb-panel-head">
+      <h2>Open Orders</h2>
+      <button type="button">{{ orders|length }}</button>
+    </div>
+    <div class="rb-dark-list">
       {% for order in orders %}
-        <div class="row">
-          <span><strong>{{ order.order_number }}</strong><small>{{ order.get_status_display }}{% if order.table %} · {{ order.table.label }}{% endif %}</small></span>
+        <div>
+          <span><strong>{{ order.order_number }}</strong><small>{{ order.get_status_display }}{% if order.table %} | {{ order.table.label }}{% endif %}</small></span>
           {% if order.status == "ready" %}
             <form method="post" action="{% url 'update-order-status' order.id %}">
               {% csrf_token %}
@@ -48,7 +53,7 @@
               <button>Served</button>
             </form>
           {% else %}
-            <span>{{ restaurant.currency }} {{ order.subtotal }}</span>
+            <b>{{ restaurant.currency }} {{ order.subtotal }}</b>
           {% endif %}
         </div>
       {% empty %}

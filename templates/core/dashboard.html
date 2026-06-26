@@ -1,145 +1,104 @@
-{% extends "core/base.html" %}
+{% extends "core/internal_base.html" %}
 {% block title %}RestBora Dashboard{% endblock %}
-{% block body_class %}dashboard-page{% endblock %}
-{% block content %}
-<div class="rb-app">
-  <aside class="rb-sidebar">
-    <a class="rb-logo" href="{% url 'dashboard' %}">
-      <span class="rb-logo-mark">RB</span>
-      <small>{{ restaurant.name|default:"RESTBORA" }}</small>
-    </a>
+{% block nav_statistics %}active{% endblock %}
+{% block internal_title %}{{ restaurant.name|default:"RESTBORA" }} is open{% endblock %}
+{% block internal_subtitle %}{{ today }} | Dar es Salaam{% endblock %}
+{% block internal_content %}
+<section class="rb-summary">
+  <article>
+    <span>Total Gross Revenue</span>
+    <strong>{{ restaurant.currency|default:"TZS" }} {{ today_sales }}</strong>
+  </article>
+  <article>
+    <span>Accepted Orders</span>
+    <strong>{% if total_orders %}{{ paid_orders }} / {{ total_orders }}{% else %}0%{% endif %}</strong>
+  </article>
+  <article>
+    <span>Today's Working Hours:</span>
+    <strong>8AM - 8PM</strong>
+  </article>
+</section>
 
-    <nav class="rb-menu">
-      <a class="active" href="{% url 'dashboard' %}"><span class="rb-icon rb-home"></span>HOME</a>
-      <a href="{% url 'cashier' %}"><span class="rb-icon rb-history"></span>ORDER HISTORY</a>
-      <a href="{% url 'waiter' %}"><span class="rb-icon rb-message"></span>ORDERS</a>
-      <a href="{% url 'dashboard' %}"><span class="rb-icon rb-stats"></span>STATISTICS</a>
-      <a href="{% url 'inventory' %}"><span class="rb-icon rb-products"></span>PRODUCTS</a>
-      <a href="/admin/"><span class="rb-icon rb-settings"></span>SETTINGS</a>
-    </nav>
+<section class="rb-content-grid">
+  <article class="rb-panel rb-overview">
+    <div class="rb-panel-head">
+      <h2>Overview</h2>
+      <button type="button">Week</button>
+    </div>
+    <div class="rb-chart">
+      <div class="rb-y-axis">
+        <span>{{ restaurant.currency|default:"TZS" }}900</span>
+        <span>{{ restaurant.currency|default:"TZS" }}800</span>
+        <span>{{ restaurant.currency|default:"TZS" }}700</span>
+        <span>{{ restaurant.currency|default:"TZS" }}600</span>
+        <span>{{ restaurant.currency|default:"TZS" }}500</span>
+        <span>{{ restaurant.currency|default:"TZS" }}400</span>
+        <span>{{ restaurant.currency|default:"TZS" }}300</span>
+        <span>{{ restaurant.currency|default:"TZS" }}200</span>
+        <span>{{ restaurant.currency|default:"TZS" }}0</span>
+      </div>
+      <div class="rb-bars">
+        <div><span style="height:45%"></span><small>Mon<br>{{ restaurant.currency|default:"TZS" }}423</small></div>
+        <div><span style="height:32%"></span><small>Tue<br>{{ restaurant.currency|default:"TZS" }}310</small></div>
+        <div><span style="height:68%"></span><small>Wed<br>{{ restaurant.currency|default:"TZS" }}620</small></div>
+        <div><span style="height:78%"></span><small>Thu<br>{{ restaurant.currency|default:"TZS" }}710</small></div>
+        <div><span style="height:90%"></span><small>Fri<br>{{ restaurant.currency|default:"TZS" }}820</small></div>
+        <div><span style="height:72%"></span><small>Sat<br>{{ restaurant.currency|default:"TZS" }}670</small></div>
+        <div><span style="height:57%"></span><small>Sun<br>{{ restaurant.currency|default:"TZS" }}520</small></div>
+      </div>
+    </div>
+  </article>
 
-    <div class="rb-open">
-      <span></span>
-      Restaurant Open
+  <aside class="rb-panel rb-top-selling">
+    <h2>Top-selling</h2>
+    <div class="rb-selling-list">
+      {% for item in best_items %}
+        <div>
+          <span>{{ forloop.counter }}</span>
+          <strong>{{ item.item_name }}</strong>
+        </div>
+      {% empty %}
+        <div><span>1</span><strong>Chips Mayai</strong></div>
+        <div><span>2</span><strong>Pilau Beef</strong></div>
+        <div><span>3</span><strong>Wali Maharage</strong></div>
+        <div><span>4</span><strong>Fresh Juice</strong></div>
+        <div><span>5</span><strong>Samosa</strong></div>
+      {% endfor %}
     </div>
   </aside>
+</section>
 
-  <section class="rb-main">
-    <header class="rb-topbar">
-      <label class="rb-search">
-        <span></span>
-        <input placeholder="Search">
-      </label>
-      <div class="rb-profile">
-        <span class="rb-avatar">A</span>
-        <strong>Admin1_resto</strong>
-        <span class="rb-chevron"></span>
-        <span class="rb-bell"></span>
-      </div>
-    </header>
-
-    <section class="rb-title">
-      <h1>{{ restaurant.name|default:"RESTBORA" }} is open <span></span></h1>
-      <p>{{ today }} | Dar es Salaam</p>
-    </section>
-
-    <section class="rb-summary">
-      <article>
-        <span>Total Gross Revenue</span>
-        <strong>{{ restaurant.currency|default:"TZS" }} {{ today_sales }}</strong>
-      </article>
-      <article>
-        <span>Accepted Orders</span>
-        <strong>{% if total_orders %}{{ paid_orders }} / {{ total_orders }}{% else %}0%{% endif %}</strong>
-      </article>
-      <article>
-        <span>Today's Working Hours:</span>
-        <strong>8AM - 8PM</strong>
-      </article>
-    </section>
-
-    <section class="rb-content-grid">
-      <article class="rb-panel rb-overview">
-        <div class="rb-panel-head">
-          <h2>Overview</h2>
-          <button type="button">Week</button>
-        </div>
-        <div class="rb-chart">
-          <div class="rb-y-axis">
-            <span>{{ restaurant.currency|default:"TZS" }}900</span>
-            <span>{{ restaurant.currency|default:"TZS" }}800</span>
-            <span>{{ restaurant.currency|default:"TZS" }}700</span>
-            <span>{{ restaurant.currency|default:"TZS" }}600</span>
-            <span>{{ restaurant.currency|default:"TZS" }}500</span>
-            <span>{{ restaurant.currency|default:"TZS" }}400</span>
-            <span>{{ restaurant.currency|default:"TZS" }}300</span>
-            <span>{{ restaurant.currency|default:"TZS" }}200</span>
-            <span>{{ restaurant.currency|default:"TZS" }}0</span>
-          </div>
-          <div class="rb-bars">
-            <div><span style="height:45%"></span><small>Mon<br>{{ restaurant.currency|default:"TZS" }}423</small></div>
-            <div><span style="height:32%"></span><small>Tue<br>{{ restaurant.currency|default:"TZS" }}310</small></div>
-            <div><span style="height:68%"></span><small>Wed<br>{{ restaurant.currency|default:"TZS" }}620</small></div>
-            <div><span style="height:78%"></span><small>Thu<br>{{ restaurant.currency|default:"TZS" }}710</small></div>
-            <div><span style="height:90%"></span><small>Fri<br>{{ restaurant.currency|default:"TZS" }}820</small></div>
-            <div><span style="height:72%"></span><small>Sat<br>{{ restaurant.currency|default:"TZS" }}670</small></div>
-            <div><span style="height:57%"></span><small>Sun<br>{{ restaurant.currency|default:"TZS" }}520</small></div>
-          </div>
-        </div>
-      </article>
-
-      <aside class="rb-panel rb-top-selling">
-        <h2>Top-selling</h2>
-        <div class="rb-selling-list">
-          {% for item in best_items %}
-            <div>
-              <span>{{ forloop.counter }}</span>
-              <strong>{{ item.item_name }}</strong>
-            </div>
-          {% empty %}
-            <div><span>1</span><strong>Chips Mayai</strong></div>
-            <div><span>2</span><strong>Pilau Beef</strong></div>
-            <div><span>3</span><strong>Wali Maharage</strong></div>
-            <div><span>4</span><strong>Fresh Juice</strong></div>
-            <div><span>5</span><strong>Samosa</strong></div>
-          {% endfor %}
-        </div>
-      </aside>
-    </section>
-
-    <section class="rb-order-strip">
-      {% for order in recent_orders|slice:":3" %}
-        <article class="rb-order-card">
-          <header>
+<section class="rb-order-strip">
+  {% for order in recent_orders|slice:":3" %}
+    <article class="rb-order-card">
+      <header>
+        <span>
+          <strong>Order {{ order.order_number }}</strong>
+          <small>{{ order.created_at|date:"d M Y, h:i A" }}</small>
+        </span>
+        <b>{{ order.customer_name|first|default:"A" }}</b>
+      </header>
+      <div class="rb-food-lines">
+        {% for item in order.items.all|slice:":2" %}
+          <div>
+            <span class="rb-plate rb-plate-{{ forloop.counter }}"></span>
             <span>
-              <strong>Order {{ order.order_number }}</strong>
-              <small>{{ order.created_at|date:"d M Y, h:i A" }}</small>
+              <strong>{{ item.item_name }}</strong>
+              <small>Qty: {{ item.quantity }}</small>
+              <em>{{ restaurant.currency|default:"TZS" }} {{ item.line_total }}</em>
             </span>
-            <b>{{ order.customer_name|first|default:"A" }}</b>
-          </header>
-          <div class="rb-food-lines">
-            {% for item in order.items.all|slice:":2" %}
-              <div>
-                <span class="rb-plate rb-plate-{{ forloop.counter }}"></span>
-                <span>
-                  <strong>{{ item.item_name }}</strong>
-                  <small>Qty: {{ item.quantity }}</small>
-                  <em>{{ restaurant.currency|default:"TZS" }} {{ item.line_total }}</em>
-                </span>
-              </div>
-            {% endfor %}
           </div>
-          <footer>
-            <span>X {{ order.items.count }} Items<br><strong>{{ restaurant.currency|default:"TZS" }} {{ order.subtotal }}</strong></span>
-            <span class="rb-order-status status-{{ order.status }}">{{ order.get_status_display }}</span>
-          </footer>
-        </article>
-      {% empty %}
-        <article class="rb-order-card">
-          <header><span><strong>No active orders</strong><small>Orders will appear here</small></span><b>R</b></header>
-        </article>
-      {% endfor %}
-    </section>
-  </section>
-</div>
+        {% endfor %}
+      </div>
+      <footer>
+        <span>X {{ order.items.count }} Items<br><strong>{{ restaurant.currency|default:"TZS" }} {{ order.subtotal }}</strong></span>
+        <span class="rb-order-status status-{{ order.status }}">{{ order.get_status_display }}</span>
+      </footer>
+    </article>
+  {% empty %}
+    <article class="rb-order-card">
+      <header><span><strong>No active orders</strong><small>Orders will appear here</small></span><b>R</b></header>
+    </article>
+  {% endfor %}
+</section>
 {% endblock %}

@@ -1,0 +1,87 @@
+{% extends "core/internal_base.html" %}
+{% block title %}Products - RestBora{% endblock %}
+{% block nav_products %}active{% endblock %}
+{% block internal_title %}Products and Foods{% endblock %}
+{% block internal_subtitle %}Owner, manager, and kitchen can add foods for this restaurant.{% endblock %}
+{% block internal_content %}
+<section class="rb-role-grid">
+  <article class="rb-panel rb-form-panel">
+    <div class="rb-panel-head">
+      <h2>Add Food</h2>
+    </div>
+    <form class="rb-expense-form" method="post" action="{% url 'add-menu-item' %}">
+      {% csrf_token %}
+      <label>Category
+        <select name="category" required>
+          {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Food name
+        <input name="name" required placeholder="Chips Mayai">
+      </label>
+      <label>Description
+        <textarea name="description" rows="2" placeholder="Short kitchen/customer description"></textarea>
+      </label>
+      <div class="rb-form-grid">
+        <label>Price
+          <input name="price" type="number" min="1" step="0.01" required>
+        </label>
+        <label>Estimated food cost
+          <input name="estimated_food_cost" type="number" min="0" step="0.01" value="0">
+        </label>
+      </div>
+      <label>Preparation minutes
+        <input name="preparation_minutes" type="number" min="1" value="15">
+      </label>
+      <div class="rb-check-row">
+        <label><input type="checkbox" name="is_available" checked> Available</label>
+        <label><input type="checkbox" name="is_popular"> Popular</label>
+      </div>
+      <button>Add Food</button>
+    </form>
+  </article>
+
+  <article class="rb-panel rb-form-panel">
+    <div class="rb-panel-head">
+      <h2>Add Category</h2>
+    </div>
+    <form class="rb-expense-form" method="post" action="{% url 'add-menu-category' %}">
+      {% csrf_token %}
+      <label>Category name
+        <input name="name" required placeholder="Lunch">
+      </label>
+      <label>Sort order
+        <input name="sort_order" type="number" min="0" value="0">
+      </label>
+      <button>Save Category</button>
+    </form>
+  </article>
+</section>
+
+<section class="rb-panel rb-recent-expenses">
+  <div class="rb-panel-head">
+    <h2>Restaurant Menu</h2>
+    <button type="button">{{ items|length }}</button>
+  </div>
+  <div class="rb-menu-cards">
+    {% for item in items %}
+      <article>
+        <span class="rb-plate rb-plate-{{ forloop.counter }}"></span>
+        <div>
+          <strong>{{ item.name }}</strong>
+          <small>{{ item.category.name }} | {{ restaurant.currency }} {{ item.price }} | {{ item.preparation_minutes }} min</small>
+          <p>{{ item.description|default:"No description yet." }}</p>
+        </div>
+        <form method="post" action="{% url 'toggle-menu-item-availability' item.id %}">
+          {% csrf_token %}
+          <button>{% if item.is_available %}Available{% else %}Hidden{% endif %}</button>
+        </form>
+      </article>
+    {% empty %}
+      <p class="muted">No food items yet. Add a category first, then add foods.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

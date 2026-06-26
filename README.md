@@ -19,9 +19,12 @@ python3 manage.py runserver 127.0.0.1:8000
 Open:
 
 - Owner dashboard: `http://127.0.0.1:8000/`
+- Staff login: `http://127.0.0.1:8000/accounts/login/`
 - Waiter: `http://127.0.0.1:8000/waiter/`
 - Kitchen: `http://127.0.0.1:8000/kitchen/`
 - Cashier: `http://127.0.0.1:8000/cashier/`
+- Products/menu: `http://127.0.0.1:8000/menu/`
+- Table QR codes: `http://127.0.0.1:8000/tables/qr/`
 - Inventory/expenses: `http://127.0.0.1:8000/inventory/`
 - Public QR menu: `http://127.0.0.1:8000/public/bora-local-foods/menu/`
 - API root: `http://127.0.0.1:8000/api/`

@@ -1,0 +1,69 @@
+{% extends "core/base.html" %}
+{% block body_class %}dashboard-page{% endblock %}
+{% block flash_messages %}{% endblock %}
+{% block content %}
+<div class="rb-app">
+  <aside class="rb-sidebar">
+    <a class="rb-logo" href="{% url 'dashboard' %}">
+      <span class="rb-logo-mark">RB</span>
+      <small>{{ restaurant.name|default:"RESTBORA" }}</small>
+    </a>
+
+    <nav class="rb-menu">
+      {% if staff_profile.role == "owner" or staff_profile.role == "manager" %}
+        <a class="{% block nav_home %}{% endblock %}" href="{% url 'dashboard' %}"><span class="rb-icon rb-home"></span>HOME</a>
+      {% endif %}
+      <a class="{% block nav_history %}{% endblock %}" href="{% url 'cashier' %}"><span class="rb-icon rb-history"></span>ORDER HISTORY</a>
+      <a class="{% block nav_orders %}{% endblock %}" href="{% url 'waiter' %}"><span class="rb-icon rb-message"></span>ORDERS</a>
+      {% if staff_profile.role == "owner" or staff_profile.role == "manager" %}
+        <a class="{% block nav_statistics %}{% endblock %}" href="{% url 'dashboard' %}"><span class="rb-icon rb-stats"></span>STATISTICS</a>
+      {% endif %}
+      {% if staff_profile.role == "owner" or staff_profile.role == "manager" or staff_profile.role == "kitchen" %}
+        <a class="{% block nav_products %}{% endblock %}" href="{% url 'menu-management' %}"><span class="rb-icon rb-products"></span>PRODUCTS</a>
+      {% endif %}
+      {% if staff_profile.role == "owner" or staff_profile.role == "manager" %}
+        <a class="{% block nav_tables %}{% endblock %}" href="{% url 'table-qr' %}"><span class="rb-icon rb-settings"></span>TABLE QR</a>
+      {% endif %}
+      {% if staff_profile.role == "owner" or staff_profile.role == "manager" or staff_profile.role == "kitchen" %}
+        <a class="{% block nav_inventory %}{% endblock %}" href="{% url 'inventory' %}"><span class="rb-icon rb-settings"></span>STOCK</a>
+      {% endif %}
+    </nav>
+
+    <div class="rb-open">
+      <span></span>
+      Restaurant Open
+    </div>
+  </aside>
+
+  <section class="rb-main">
+    <header class="rb-topbar">
+      <label class="rb-search">
+        <span></span>
+        <input placeholder="Search">
+      </label>
+      <div class="rb-profile">
+        <span class="rb-avatar">{{ request.user.username|first|upper|default:"A" }}</span>
+        <strong>{{ request.user.username|default:"Admin1_resto" }}</strong>
+        <span class="rb-chevron"></span>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button class="rb-logout">Logout</button>
+        </form>
+      </div>
+    </header>
+
+    {% if messages %}
+      <div class="messages rb-messages">
+        {% for message in messages %}<p class="{{ message.tags }}">{{ message }}</p>{% endfor %}
+      </div>
+    {% endif %}
+
+    <section class="rb-title">
+      <h1>{% block internal_title %}{{ restaurant.name|default:"RESTBORA" }} is open{% endblock %} <span></span></h1>
+      <p>{% block internal_subtitle %}Restaurant operations dashboard{% endblock %}</p>
+    </section>
+
+    {% block internal_content %}{% endblock %}
+  </section>
+</div>
+{% endblock %}

@@ -28,11 +28,13 @@
   </header>
 
   <main class="shell">
-    {% if messages %}
-      <div class="messages">
-        {% for message in messages %}<p class="{{ message.tags }}">{{ message }}</p>{% endfor %}
-      </div>
-    {% endif %}
+    {% block flash_messages %}
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}<p class="{{ message.tags }}">{{ message }}</p>{% endfor %}
+        </div>
+      {% endif %}
+    {% endblock %}
     {% block content %}{% endblock %}
   </main>
 </body>

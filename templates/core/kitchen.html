@@ -1,27 +1,27 @@
-{% extends "core/base.html" %}
+{% extends "core/internal_base.html" %}
 {% block title %}Kitchen - RestBora{% endblock %}
-{% block content %}
-<section class="page-head">
-  <div>
-    <h1>Kitchen Display</h1>
-    <p>Move orders from pending to preparing, then ready.</p>
-  </div>
-</section>
-
-<section class="order-board">
+{% block nav_orders %}active{% endblock %}
+{% block internal_title %}Kitchen Display{% endblock %}
+{% block internal_subtitle %}Move orders from pending to preparing, then ready.{% endblock %}
+{% block internal_content %}
+<section class="rb-kitchen-board">
   {% for order in orders %}
-    <article class="panel order-card status-{{ order.status }}">
+    <article class="rb-order-card rb-kitchen-card">
       <header>
-        <span><strong>{{ order.order_number }}</strong><small>{{ order.created_at|time:"H:i" }}{% if order.table %} · {{ order.table.label }}{% endif %}</small></span>
-        <b>{{ order.get_status_display }}</b>
+        <span>
+          <strong>Order {{ order.order_number }}</strong>
+          <small>{{ order.created_at|time:"H:i" }}{% if order.table %} | {{ order.table.label }}{% endif %}</small>
+        </span>
+        <b>{{ order.customer_name|first|default:"A" }}</b>
       </header>
-      <ul>
+      <div class="rb-ticket-items">
         {% for item in order.items.all %}
-          <li>{{ item.quantity }} x {{ item.item_name }}{% if item.notes %} · {{ item.notes }}{% endif %}</li>
+          <div><span class="rb-plate rb-plate-{{ forloop.counter }}"></span><strong>{{ item.quantity }} x {{ item.item_name }}</strong></div>
         {% endfor %}
-      </ul>
-      {% if order.notes %}<p class="note">{{ order.notes }}</p>{% endif %}
-      <div class="actions">
+      </div>
+      {% if order.notes %}<p class="rb-ticket-note">{{ order.notes }}</p>{% endif %}
+      <footer>
+        <span class="rb-order-status status-{{ order.status }}">{{ order.get_status_display }}</span>
         <form method="post" action="{% url 'update-order-status' order.id %}">
           {% csrf_token %}
           <input type="hidden" name="status" value="preparing">
@@ -32,12 +32,12 @@
           {% csrf_token %}
           <input type="hidden" name="status" value="ready">
           <input type="hidden" name="next" value="kitchen">
-          <button class="primary">Ready</button>
+          <button>Ready</button>
         </form>
-      </div>
+      </footer>
     </article>
   {% empty %}
-    <article class="panel"><p class="muted">No kitchen orders right now.</p></article>
+    <article class="rb-panel"><p class="muted">No kitchen orders right now.</p></article>
   {% endfor %}
 </section>
 {% endblock %}

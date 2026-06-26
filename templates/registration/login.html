@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% block title %}Sign in - RestBora{% endblock %}
+{% block body_class %}dashboard-page login-page{% endblock %}
+{% block flash_messages %}{% endblock %}
+{% block content %}
+<section class="rb-login">
+  <div class="rb-login-card">
+    <a class="rb-logo" href="{% url 'dashboard' %}">
+      <span class="rb-logo-mark">RB</span>
+      <small>RESTBORA</small>
+    </a>
+    <div>
+      <h1>Use the details provided by your account administrator.</h1>
+      <p>Next time you will only need the username and password.</p>
+    </div>
+    {% if form.errors %}
+      <p class="rb-login-error">Invalid username or password.</p>
+    {% endif %}
+    <form method="post" class="rb-login-form">
+      {% csrf_token %}
+      <label>Username
+        <input name="username" autocomplete="username" autofocus required>
+      </label>
+      <label>Password
+        <input name="password" type="password" autocomplete="current-password" required>
+      </label>
+      <button>Sign in</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
