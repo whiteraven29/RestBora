@@ -1,0 +1,43 @@
+{% extends "core/base.html" %}
+{% block title %}Kitchen - RestBora{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Kitchen Display</h1>
+    <p>Move orders from pending to preparing, then ready.</p>
+  </div>
+</section>
+
+<section class="order-board">
+  {% for order in orders %}
+    <article class="panel order-card status-{{ order.status }}">
+      <header>
+        <span><strong>{{ order.order_number }}</strong><small>{{ order.created_at|time:"H:i" }}{% if order.table %} · {{ order.table.label }}{% endif %}</small></span>
+        <b>{{ order.get_status_display }}</b>
+      </header>
+      <ul>
+        {% for item in order.items.all %}
+          <li>{{ item.quantity }} x {{ item.item_name }}{% if item.notes %} · {{ item.notes }}{% endif %}</li>
+        {% endfor %}
+      </ul>
+      {% if order.notes %}<p class="note">{{ order.notes }}</p>{% endif %}
+      <div class="actions">
+        <form method="post" action="{% url 'update-order-status' order.id %}">
+          {% csrf_token %}
+          <input type="hidden" name="status" value="preparing">
+          <input type="hidden" name="next" value="kitchen">
+          <button>Preparing</button>
+        </form>
+        <form method="post" action="{% url 'update-order-status' order.id %}">
+          {% csrf_token %}
+          <input type="hidden" name="status" value="ready">
+          <input type="hidden" name="next" value="kitchen">
+          <button class="primary">Ready</button>
+        </form>
+      </div>
+    </article>
+  {% empty %}
+    <article class="panel"><p class="muted">No kitchen orders right now.</p></article>
+  {% endfor %}
+</section>
+{% endblock %}

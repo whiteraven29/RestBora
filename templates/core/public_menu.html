@@ -1,0 +1,35 @@
+{% extends "core/base.html" %}
+{% block title %}QR Menu - {{ restaurant.name }}{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>{{ restaurant.name }} Menu</h1>
+    <p>{% if table %}Ordering for {{ table.label }}.{% else %}Takeaway or general QR order.{% endif %}</p>
+  </div>
+</section>
+
+<form class="panel form" method="post" action="{% url 'create-public-order' restaurant.slug %}">
+  {% csrf_token %}
+  <input type="hidden" name="table_token" value="{{ table.qr_token }}">
+  <div class="grid two">
+    <label>Your name
+      <input name="customer_name" required>
+    </label>
+    <label>Phone number
+      <input name="customer_phone" required>
+    </label>
+  </div>
+  <label>Notes
+    <textarea name="notes" rows="2" placeholder="Optional"></textarea>
+  </label>
+  <div class="item-grid">
+    {% for item in items %}
+      <label class="item-picker">
+        <span><strong>{{ item.name }}</strong><small>{{ item.category.name }} · {{ restaurant.currency }} {{ item.price }}</small></span>
+        <input type="number" name="item_{{ item.id }}" min="0" value="0">
+      </label>
+    {% endfor %}
+  </div>
+  <button class="primary wide">Place Order</button>
+</form>
+{% endblock %}

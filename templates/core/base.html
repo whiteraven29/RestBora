@@ -1,0 +1,39 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}RestBora{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'core/styles.css' %}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <header class="topbar">
+    <a class="brand" href="{% url 'dashboard' %}">
+      <span class="brand-mark">RB</span>
+      <span>
+        <strong>{{ restaurant.name|default:"RestBora" }}</strong>
+        <small>Restaurant operations</small>
+      </span>
+    </a>
+    <nav>
+      <a href="{% url 'dashboard' %}">Owner</a>
+      <a href="{% url 'waiter' %}">Waiter</a>
+      <a href="{% url 'kitchen' %}">Kitchen</a>
+      <a href="{% url 'cashier' %}">Cashier</a>
+      <a href="{% url 'inventory' %}">Inventory</a>
+      {% if restaurant %}<a href="{% url 'public-menu' restaurant.slug %}">QR Menu</a>{% endif %}
+      <a href="/api/">API</a>
+    </nav>
+  </header>
+
+  <main class="shell">
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}<p class="{{ message.tags }}">{{ message }}</p>{% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

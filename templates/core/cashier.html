@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+{% block title %}Cashier - RestBora{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Cashier</h1>
+    <p>Record full or partial payments. Orders become paid when balance reaches zero.</p>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Unpaid Orders</h2>
+  <div class="table-list">
+    {% for order in orders %}
+      <div class="row payment-row">
+        <span><strong>{{ order.order_number }}</strong><small>{{ order.get_status_display }} · balance {{ restaurant.currency }} {{ order.balance_due }}</small></span>
+        <form method="post" action="{% url 'record-payment' order.id %}">
+          {% csrf_token %}
+          <select name="method">
+            {% for value,label in methods.choices %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+          </select>
+          <input name="amount" type="number" min="1" step="0.01" value="{{ order.balance_due }}">
+          <input name="reference" placeholder="Reference">
+          <button class="primary">Confirm</button>
+        </form>
+      </div>
+    {% empty %}
+      <p class="muted">No unpaid orders.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+{% block title %}Order Sent - RestBora{% endblock %}
+{% block content %}
+<section class="panel success-panel">
+  <h1>Order Sent</h1>
+  <p>Your order number is <strong>{{ order.order_number }}</strong>.</p>
+  <p>Status: {{ order.get_status_display }}. Total: {{ restaurant.currency }} {{ order.subtotal }}</p>
+  <a class="button-link" href="{% url 'public-menu' restaurant.slug %}">Back to Menu</a>
+</section>
+{% endblock %}

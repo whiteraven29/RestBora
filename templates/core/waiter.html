@@ -1,0 +1,60 @@
+{% extends "core/base.html" %}
+{% block title %}Waiter - RestBora{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Waiter Order Entry</h1>
+    <p>Select a table, add quantities, and send the order to the kitchen.</p>
+  </div>
+</section>
+
+<section class="grid two">
+  <form class="panel form" method="post" action="{% url 'create-waiter-order' %}">
+    {% csrf_token %}
+    <input type="hidden" name="restaurant" value="{{ restaurant.id }}">
+    <label>Table
+      <select name="table">
+        {% for table in tables %}<option value="{{ table.id }}">{{ table.label }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Customer name
+      <input name="customer_name" placeholder="Optional">
+    </label>
+    <label>Order notes
+      <textarea name="notes" rows="2" placeholder="No onions, takeaway, etc."></textarea>
+    </label>
+    <div class="item-grid">
+      {% for item in items %}
+        <label class="item-picker">
+          <span><strong>{{ item.name }}</strong><small>{{ restaurant.currency }} {{ item.price }}</small></span>
+          <input type="number" name="item_{{ item.id }}" min="0" value="0">
+        </label>
+      {% endfor %}
+    </div>
+    <button class="primary">Send to Kitchen</button>
+  </form>
+
+  <article class="panel">
+    <h2>Open Orders</h2>
+    <div class="table-list">
+      {% for order in orders %}
+        <div class="row">
+          <span><strong>{{ order.order_number }}</strong><small>{{ order.get_status_display }}{% if order.table %} · {{ order.table.label }}{% endif %}</small></span>
+          {% if order.status == "ready" %}
+            <form method="post" action="{% url 'update-order-status' order.id %}">
+              {% csrf_token %}
+              <input type="hidden" name="status" value="served">
+              <input type="hidden" name="next" value="waiter">
+              <button>Served</button>
+            </form>
+          {% else %}
+            <span>{{ restaurant.currency }} {{ order.subtotal }}</span>
+          {% endif %}
+        </div>
+      {% empty %}
+        <p class="muted">No open orders.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}
